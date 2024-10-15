@@ -12,8 +12,9 @@ export const signup = expressAsyncHandler(
     const { name, email, password } = req.body;
     const userExists = await prisma.user.findUnique({ where: { email } });
     if (userExists) {
-      next(
-        new BadRequest("User already exists", ErrorCodes.USER_ALREADY_EXISTS)
+      throw new BadRequest(
+        "User already exists",
+        ErrorCodes.USER_ALREADY_EXISTS
       );
     }
     const hashPass = await hashPassword(password);
